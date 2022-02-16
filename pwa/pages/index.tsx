@@ -15,15 +15,16 @@ const Welcome = () => (
           rel="noopener noreferrer"
           href="https://api-platform.com"
         >
-          {/*<Logo/>*/}
-          <MadeByMaxIcon/>
+          <Logo/>
+
         </a>
         <a
           target="_blank"
           rel="noopener noreferrer"
           href="https://les-tilleuls.coop"
         >
-          <Flag/>
+          {/*<Flag/>*/}
+          <MadeByMaxIcon/>
         </a>
       </header>
       <section className="welcome__main">

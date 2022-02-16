@@ -14,3 +14,4 @@ composer sync-recipes --force
 
 echo 'Run `git diff` and carefully inspect the changes made by the recipes.'
 echo 'Run `docker-compose up --build --force-recreate` now and check that everything is fine!'
+
