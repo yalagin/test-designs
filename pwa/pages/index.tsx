@@ -1,5 +1,6 @@
 import Head from "next/head";
 import Link from "next/link";
+import MadeByMaxIcon from "./../components/MadeByMaxIcon"
 
 const Welcome = () => (
   <>
@@ -14,7 +15,8 @@ const Welcome = () => (
           rel="noopener noreferrer"
           href="https://api-platform.com"
         >
-          <Logo/>
+          {/*<Logo/>*/}
+          <MadeByMaxIcon/>
         </a>
         <a
           target="_blank"
