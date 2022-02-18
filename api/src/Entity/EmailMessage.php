@@ -8,10 +8,12 @@ use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 
 /**
@@ -27,14 +29,32 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  * @ApiFilter(OrderFilter::class, properties={"sender", "toRecipient","about","text","dateReceived"}, arguments={"orderParameterName"="order"})
  *
  */
+#[ApiResource(
+    collectionOperations: [
+        "get",
+        "post"
+    ],
+    itemOperations: [
+        "get",
+        "put",
+        "patch",
+        "delete"
+    ],
+    attributes: ["order"=>["dateReceived"=> "desc"]],
+    denormalizationContext: ["groups" => ['subdesign','get']],
+    elasticsearch: false, normalizationContext: ["groups" => ['subdesign']]
+)]
 class EmailMessage
 {
     /**
      * @var string
      *
      * @ORM\Id
-     * @ORM\Column(type="guid")
-     * @Assert\Type("Ramsey\Uuid\UuidInterface")
+     * @ORM\Column(type="uuid")
+     * @Assert\Uuid
+     * @ORM\GeneratedValue(strategy="CUSTOM")
+     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
+     *  @Groups({"get"})
      */
     private $id;
 
@@ -43,6 +63,7 @@ class EmailMessage
      *
      * @ORM\Column(type="text", nullable=true)
      * @ApiProperty(iri="http://schema.org/sender")
+     * @Groups({"subdesign"})
      */
     private $sender;
 
@@ -51,6 +72,7 @@ class EmailMessage
      *
      * @ORM\Column(type="text", nullable=true)
      * @ApiProperty(iri="http://schema.org/toRecipient")
+     *  @Groups({"subdesign"})
      */
     private $toRecipient;
 
@@ -59,6 +81,7 @@ class EmailMessage
      *
      * @ORM\Column(type="text", nullable=true)
      * @ApiProperty(iri="http://schema.org/about")
+     *  @Groups({"subdesign"})
      */
     private $about;
 
@@ -67,6 +90,7 @@ class EmailMessage
      *
      * @ORM\Column(type="text", nullable=true)
      * @ApiProperty(iri="http://schema.org/text")
+     *  @Groups({"subdesign"})
      */
     private $text;
 
@@ -76,6 +100,7 @@ class EmailMessage
      * @ORM\Column(type="datetime", nullable=true)
      * @ApiProperty(iri="http://schema.org/dateReceived")
      * @Assert\Type("\DateTimeInterface")
+     *  @Groups({"subdesign"})
      */
     private $dateReceived;
 
@@ -83,6 +108,7 @@ class EmailMessage
      * @var bool|null
      *
      * @ORM\Column(type="boolean", nullable=true, options={"default" : false})
+     *  @Groups({"subdesign"})
      */
     private $attachment = false;
 
